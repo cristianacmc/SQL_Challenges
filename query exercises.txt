@@ -1,0 +1,6 @@
+1) Who is the oldest customer in the customers table?
+2) Which customers have forenames or surnames beginning with J?
+3) Which customers have .com email addresses?
+4) Which order was placed first?
+5) How many total copies of games are in-stock?
+EXT) Which customer placed an order closest to their birthday?
