@@ -1,5 +1,5 @@
 USE movielens;
--- 1 - List the titles and release dates of movies released between 1983-1993 in reverse chronological order.
+-- 1) List the titles and release dates of movies released between 1983-1993 in reverse chronological order.
 /*
 SELECT title, release_date
 FROM movies 
@@ -7,7 +7,8 @@ WHERE release_date BETWEEN "1983-01-01" AND "1993-12-31"
 ORDER BY release_date;
 */
 
--- 2 - Without using LIMIT, list the titles of the movies with the lowest average rating.
+-- 2) Without using LIMIT, list the titles of the movies with the lowest average rating.
+/*
 CREATE VIEW avgratings AS (
 SELECT r.movie_id AS movie_id, m.title AS movie_title, AVG(r.rating) AS avg_rating
 FROM ratings r
@@ -15,12 +16,12 @@ INNER JOIN movies m
 ON m.id = r.movie_id
 GROUP BY r.movie_id
 );
-
 SELECT movie_id, movie_title, avg_rating 
 FROM  avgratings
 WHERE avg_rating = (SELECT MIN(avg_rating) FROM avgratings);
+*/
 
--- 3 - List the unique records for Sci-Fi movies where male 40-year-old students have given 5-star ratings.
+-- 3) List the unique records for Sci-Fi movies where male 40-year-old students have given 5-star ratings.
 /*
 SELECT DISTINCT *
 from movies m
@@ -37,9 +38,21 @@ AND r.rating = 5
 AND u.gender = "M"
 AND u.age = 40;
 */
--- 4 - List the unique titles of each of the movies released on the most popular release day.
--- CREATE VIEW distinct_movies
--- AS 
+-- 4) List the unique titles of each of the movies released on the most popular release day.
+-- most popular release_DATE:
+CREATE VIEW mostpopular AS (
+SELECT COUNT(id) AS quantity, release_date
+FROM movies 
+GROUP BY release_date
+);
+
+SELECT DISTINCT title 
+FROM movies m
+WHERE release_date = (SELECT release_date 
+					FROM mostpopular
+                    WHERE quantity = (SELECT MAX(quantity) 
+										FROM mostpopular));
+
 /*	SELECT title, release_date, COUNT(title) AS most_popular
 	FROM movies 
 	GROUP BY release_date
