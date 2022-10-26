@@ -8,13 +8,20 @@ ORDER BY release_date;
 */
 
 -- 2 - Without using LIMIT, list the titles of the movies with the lowest average rating.
-/*SELECT m.title, r.rating 
-FROM movies m
-NATURAL JOIN ratings r
-ORDER BY r.rating 
-*/
+CREATE VIEW avgratings AS (
+SELECT r.movie_id AS movie_id, m.title AS movie_title, AVG(r.rating) AS avg_rating
+FROM ratings r
+INNER JOIN movies m
+ON m.id = r.movie_id
+GROUP BY r.movie_id
+);
+
+SELECT movie_id, movie_title, avg_rating 
+FROM  avgratings
+WHERE avg_rating = (SELECT MIN(avg_rating) FROM avgratings);
 
 -- 3 - List the unique records for Sci-Fi movies where male 40-year-old students have given 5-star ratings.
+/*
 SELECT DISTINCT *
 from movies m
 INNER JOIN genres_movies gm
@@ -29,9 +36,17 @@ WHERE g.name = "Sci-Fi"
 AND r.rating = 5
 AND u.gender = "M"
 AND u.age = 40;
-
+*/
 -- 4 - List the unique titles of each of the movies released on the most popular release day.
-/*SELECT DISTINCT title 
-FROM movies 
-WHERE 
- */
+-- CREATE VIEW distinct_movies
+-- AS 
+/*	SELECT title, release_date, COUNT(title) AS most_popular
+	FROM movies 
+	GROUP BY release_date
+	ORDER BY most_popular DESC
+
+--SELECT DISTINCT title 
+-- FROM distinct_movies;
+*/
+-- Find the total number of movies in each genre; list the results in ascending numeric order.
+
