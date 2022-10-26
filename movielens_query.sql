@@ -52,14 +52,15 @@ WHERE release_date = (SELECT release_date
 					FROM mostpopular
                     WHERE quantity = (SELECT MAX(quantity) 
 										FROM mostpopular));
-
-/*	SELECT title, release_date, COUNT(title) AS most_popular
-	FROM movies 
-	GROUP BY release_date
-	ORDER BY most_popular DESC
-
---SELECT DISTINCT title 
--- FROM distinct_movies;
-*/
+                                        
+-- 5) Find the total number of movies in each genre; list the results in ascending numeric order.
+-- total movies per gere
+SELECT gm.genre_id, g.name, COUNT(gm.movie_id) AS qtdmovies
+	FROM genres_movies gm
+    INNER JOIN genres g
+		ON gm.genre_id = g.id
+	GROUP BY gm.genre_id
+    ORDER BY qtdmovies;
+	
 -- Find the total number of movies in each genre; list the results in ascending numeric order.
 
